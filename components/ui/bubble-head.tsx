@@ -57,16 +57,12 @@ export default function BubbleHead() {
     return (
         <div
             ref={pillRef}
-            className="fixed bottom-0 sm:bottom-6 left-0 w-full flex justify-center z-50 pb-[env(safe-area-inset-bottom)] sm:pb-0"
+            className="fixed bottom-0 sm:bottom-6 left-0 w-full flex justify-center z-50 pb-[env(safe-area-inset-bottom)] sm:pb-0 pointer-events-none"
         >
-            {/*
-              Mobile (< sm): full-width tab bar, flush with the screen edge, square corners, top border only.
-              Tablet/desktop (sm+): floating rounded pill, centered, border all around.
-            */}
             <div
                 className="flex items-center justify-around sm:justify-center w-full sm:w-auto
                            gap-0 sm:gap-1 bg-card border-t-2 sm:border-2 border-primary
-                           rounded-none sm:rounded-full px-1 py-2 sm:p-1"
+                           rounded-none sm:rounded-full px-1 py-2 sm:p-1 pointer-events-auto"
             >
                 {items.map(({ label, icon: Icon, onClick, isActive }) => (
                     <button

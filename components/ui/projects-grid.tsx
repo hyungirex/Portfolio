@@ -13,68 +13,69 @@ type Project = {
     image: string;
     section: Section;
     video?: string;
+    link?: string;
 };
 
 const projects: Project[] = [
-    { title: "Consrv", category: "Website", image: "/projects/consrv.png", section: "website" },
+    { title: "Consrv", category: "Website", image: "/projects/consrv.png", section: "website", link: "https://www.consrv.online/" },
     { title: "Barangay San Miguel CMS", category: "Website", image: "/projects/san-mig.png", section: "website" },
-    { title: "Slab UI", category: "Component Library", image: "/projects/slab-ui.png", section: "website" },
-    { title: "CAV-RHS", category: "Website", image: "/projects/cav-rhs.png", section: "website" },
-    { title: "Raze", category: "Website", image: "/projects/raze.png", section: "website" },
+    { title: "Slab UI", category: "Component Library", image: "/projects/slab-ui.png", section: "website", link: "https://slab-ui.vercel.app/"},
+    { title: "CAV-RHS", category: "Website", image: "/projects/cav-rhs.png", section: "website", link: "https://cav-rhs.vercel.app/" },
+    { title: "Raze", category: "Website", image: "/projects/raze.png", section: "website", link: "https://azrel.vercel.app/" },
     { title: "Pong C++", category: "Desktop Application", image: "/projects/pong-cpp.png", section: "website" },
-    { title: "Pacman Assets", category: "Digital Asset", image: "/projects/pac-man.png", section: "gallery" },
-    { title: "Music Taste's Mascot", category: "Mascot Design", image: "/projects/music-taste.gif", section: "gallery" },
-    { title: "Russel's Mascot", category: "Mascot Design", image: "/projects/russel.png", section: "gallery" },
-    { title: "Ceaseless Ver. 1", category: "Logo Design", image: "/projects/ceaseless-silvr.png", section: "gallery" },
-    { title: "Ceaseless Ver. 2", category: "Logo Design", image: "/projects/ceaseless-purpl.png", section: "gallery" },
-    { title: "Raze Logo", category: "Logo Design", image: "/projects/raze-logo.png", section: "gallery" },
-    { title: "Brushwork Logo", category: "Logo Design", image: "/projects/brushwork-logo.png", section: "gallery" },
-    { title: "Consrv Logo", category: "Logo Design", image: "/projects/consrv-logo.png", section: "gallery" },
-    { title: "Consrv Mascot", category: "Mascot Design", image: "/projects/consrv-mascot.png", section: "gallery" },
-    { title: "Green Warriors Concept", category: "Mockup Design", image: "/projects/g-warriors.png", section: "gallery" },
-    { title: "Coffee Packaging Concept", category: "Mockup Design", image: "/projects/leblanc.png", section: "gallery" },
-    { title: "Ceaseless Shirt Cutout", category: "Cutout Design", image: "/projects/ceaseless-cutout.png", section: "gallery" },
-    { title: "Registrar Org Chart", category: "Public Material", image: "/projects/org-chart.png", section: "gallery" },
-    { title: "Jean", category: "Sketch", image: "/projects/jean-sketch.png", section: "sketch" },
-    { title: "Lumine", category: "Sketch", image: "/projects/trav-sketch.png", section: "sketch" },
-    { title: "Lisa", category: "Sketch", image: "/projects/lisa-sketch.png", section: "sketch" },
-    { title: "Ollie", category: "Sketch", image: "/projects/ollie-sketch.png", section: "sketch" },
-    { title: "Ganyu", category: "Sketch", image: "/projects/ganyu-sketch.png", section: "sketch" },
-    { title: "Mona", category: "Sketch", image: "/projects/mona-sketch.png", section: "sketch" },
-    { title: "Keqing", category: "Sketch", image: "/projects/keqing-sketch.png", section: "sketch" },
-    { title: "Polka", category: "Sketch", image: "/projects/polka-sketch.png", section: "sketch" },
-    { title: "Eye Practice", category: "Sketch", image: "/projects/eye-sketch.png", section: "sketch" },
-    { title: "Lucy", category: "Sketch", image: "/projects/lucy-sketch.png", section: "sketch" },
-    { title: "Judge", category: "Sketch", image: "/projects/judge-sketch.png", section: "sketch" },
-    { title: "Mini Judge", category: "Sketch", image: "/projects/mini-judge.png", section: "sketch" },
-    { title: "Character Design", category: "Sketch", image: "/projects/character-design.png", section: "sketch" },
-    { title: "Config", category: "Sketch", image: "/projects/config-design.png", section: "sketch" },
+    { title: "Pacman Assets", category: "Digital Asset", image: "/projects/pac-man.png", section: "gallery", link: "/projects/pacman-assets.png"},
+    { title: "Music Taste's Mascot", category: "Mascot Design", image: "/projects/music-taste.gif", section: "gallery", link: "/projects/music-taste.gif" },
+    { title: "Russel's Mascot", category: "Mascot Design", image: "/projects/russel.png", section: "gallery", link: "/projects/russel.png" },
+    { title: "Ceaseless Ver. 1", category: "Logo Design", image: "/projects/ceaseless-silvr.png", section: "gallery", link: "/projects/ceaseless-silvr.png" },
+    { title: "Ceaseless Ver. 2", category: "Logo Design", image: "/projects/ceaseless-purpl.png", section: "gallery", link: "/projects/ceaseless-purpl.png" },
+    { title: "Raze Logo", category: "Logo Design", image: "/projects/raze-logo.png", section: "gallery", link: "/projects/raze-logo.png" },
+    { title: "Brushwork Logo", category: "Logo Design", image: "/projects/brushwork-logo.png", section: "gallery", link: "/projects/brushwork-logo.png" },
+    { title: "Consrv Logo", category: "Logo Design", image: "/projects/consrv-logo.png", section: "gallery", link: "/projects/consrv-logo.png" },
+    { title: "Consrv Mascot", category: "Mascot Design", image: "/projects/consrv-mascot.png", section: "gallery", link: "/projects/consrv-mascot.png" },
+    { title: "Green Warriors Concept", category: "Mockup Design", image: "/projects/g-warriors.png", section: "gallery", link: "/projects/g-warriors.png" },
+    { title: "Coffee Packaging Concept", category: "Mockup Design", image: "/projects/leblanc.png", section: "gallery", link: "/projects/leblanc.png" },
+    { title: "Ceaseless Shirt Cutout", category: "Cutout Design", image: "/projects/ceaseless-cutout.png", section: "gallery", link: "/projects/ceaseless-cutout.png" },
+    { title: "Registrar Org Chart", category: "Public Material", image: "/projects/org-chart.png", section: "gallery", link: "/projects/org-chart.png" },
+    { title: "Jean", category: "Sketch", image: "/projects/jean-sketch.png", section: "sketch", link: "/projects/jean-sketch.png"},
+    { title: "Lumine", category: "Sketch", image: "/projects/trav-sketch.png", section: "sketch", link: "/projects/trav-sketch.png"},
+    { title: "Lisa", category: "Sketch", image: "/projects/lisa-sketch.png", section: "sketch", link: "/projects/lisa-sketch.png"},
+    { title: "Ollie", category: "Sketch", image: "/projects/ollie-sketch.png", section: "sketch", link: "/projects/ollie-sketch.png"},
+    { title: "Ganyu", category: "Sketch", image: "/projects/ganyu-sketch.png", section: "sketch", link: "/projects/ganyu-sketch.png"},
+    { title: "Mona", category: "Sketch", image: "/projects/mona-sketch.png", section: "sketch", link: "/projects/mona-sketch.png"},
+    { title: "Keqing", category: "Sketch", image: "/projects/keqing-sketch.png", section: "sketch", link: "/projects/keqing-sketch.png"},
+    { title: "Polka", category: "Sketch", image: "/projects/polka-sketch.png", section: "sketch", link: "/projects/polka-sketch.png" },
+    { title: "Eye Practice", category: "Sketch", image: "/projects/eye-sketch.png", section: "sketch", link: "/projects/eye-sketch.png" },
+    { title: "Lucy", category: "Sketch", image: "/projects/lucy-sketch.png", section: "sketch", link: "/projects/lucy-sketch.png" },
+    { title: "Judge", category: "Sketch", image: "/projects/judge-sketch.png", section: "sketch", link: "/projects/judge-sketch.png" },
+    { title: "Mini Judge", category: "Sketch", image: "/projects/mini-judge.png", section: "sketch", link: "/projects/mini-judge.png" },
+    { title: "Character Design", category: "Sketch", image: "/projects/character-design.png", section: "sketch", link: "/projects/character-design.png" },
+    { title: "Config", category: "Sketch", image: "/projects/config-design.png", section: "sketch", link: "/projects/config-design.png" },
     { title: "Resources Retold", category: "Videography & Editing", image: "/projects/resources-thumb.png", video: "https://streamable.com/jvgdwg", section: "video" },
     { title: "Evolution of Computing", category: "Videography & Editing", image: "/projects/evolution-thumb.png", video: "https://streamable.com/9zjpj5", section: "video" },
-    { title: "Parental Joy", category: "Photograph & Editing", image: "/projects/parental-enjoyment.png", section: "photo" },
-    { title: "Score!", category: "Photograph & Editing", image: "/projects/score.png", section: "photo" },
-    { title: "City View", category: "Photograph & Editing", image: "/projects/city-view.png", section: "photo" },
-    { title: "Brief Respite", category: "Photograph & Editing", image: "/projects/brief-respite.png", section: "photo" },
-    { title: "Glimpse to Nostalgia", category: "Photograph & Editing", image: "/projects/childhood.png", section: "photo" },
-    { title: "Night City", category: "Photograph & Editing", image: "/projects/night-city.png", section: "photo" },
-    { title: "City Lights", category: "Photograph & Editing", image: "/projects/city-light.png", section: "photo" },
-    { title: "Red in White", category: "Photograph & Editing", image: "/projects/redin-white.png", section: "photo" },
-    { title: "Christmas is Coming", category: "Photograph & Editing", image: "/projects/christmas-light.png", section: "photo" },
-    { title: "I graduated!", category: "Editing", image: "/projects/graduation.png", section: "photo" },
-    { title: "Happy Moments", category: "Editing", image: "/projects/happy-moments.png", section: "photo" },
-    { title: "Elegance", category: "Photograph & Editing", image: "/projects/elegance.png", section: "photo" },
-    { title: "RAHHH!!!", category: "Photograph & Editing", image: "/projects/rah.png", section: "photo" },
+    { title: "Parental Joy", category: "Photograph & Editing", image: "/projects/parental-enjoyment.png", section: "photo", link: "/projects/parental-enjoyment.png"},
+    { title: "Score!", category: "Photograph & Editing", image: "/projects/score.png", section: "photo", link: "/projects/score.png" },
+    { title: "City View", category: "Photograph & Editing", image: "/projects/city-view.png", section: "photo", link: "/projects/city-view.png" },
+    { title: "Brief Respite", category: "Photograph & Editing", image: "/projects/brief-respite.png", section: "photo", link: "/projects/brief-respite.png" },
+    { title: "Glimpse to Nostalgia", category: "Photograph & Editing", image: "/projects/childhood.png", section: "photo", link: "/projects/childhood.png" },
+    { title: "Night City", category: "Photograph & Editing", image: "/projects/night-city.png", section: "photo", link: "/projects/night-city.png" },
+    { title: "City Lights", category: "Photograph & Editing", image: "/projects/city-light.png", section: "photo", link: "/projects/city-light.png" },
+    { title: "Red in White", category: "Photograph & Editing", image: "/projects/redin-white.png", section: "photo", link: "/projects/redin-white.png" },
+    { title: "Christmas is Coming", category: "Photograph & Editing", image: "/projects/christmas-light.png", section: "photo", link: "/projects/christmas-light.png" },
+    { title: "I graduated!", category: "Editing", image: "/projects/graduation.png", section: "photo", link: "/projects/graduation.png" },
+    { title: "Happy Moments", category: "Editing", image: "/projects/happy-moments.png", section: "photo", link: "/projects/happy-moments.png" },
+    { title: "Elegance", category: "Photograph & Editing", image: "/projects/elegance.png", section: "photo", link: "/projects/elegance.png" },
+    { title: "RAHHH!!!", category: "Photograph & Editing", image: "/projects/rah.png", section: "photo", link: "/projects/rah.png" },
     { title: "Pamantasan ng Lungsod ng Pasig Logo Showcase", category: "3D Design & Animation", image: "/projects/plp-logo.png", video: "https://streamable.com/dhgs59", section: "threed" },
     { title: "Pizzalicious", category: "3D Design & Animation", image: "/projects/pizzalicious.png", video: "https://streamable.com/s3jmk8", section: "threed" },
     { title: "3D Geograph Practice", category: "3D Design & Animation", image: "/projects/taal-showcase.png", video: "https://streamable.com/gutvni", section: "threed" },
-    { title: "Derp Bloopers", category: "3D Design", image: "/projects/derp-blooper.png", section: "threed" },
-    { title: "Lighting Test", category: "3D Design", image: "/projects/lighting-test.png", section: "threed" },
-    { title: "Post Practice", category: "3D Design", image: "/projects/post-test.png", section: "threed" },
-    { title: "Post Practice 2", category: "3D Design", image: "/projects/post-two.png", section: "threed" },
-    { title: "Lighting Practice", category: "3D Design", image: "/projects/lighting-practice.png", section: "threed" },
-    { title: "Aesthetics", category: "3D Design", image: "/projects/aesthetic.png", section: "threed" },
-    { title: "GlaDos", category: "3D Design", image: "/projects/glados.png", section: "threed" },
-    { title: "Eula", category: "3D Design", image: "/projects/eula.png", section: "threed" },
+    { title: "Derp Bloopers", category: "3D Design", image: "/projects/derp-blooper.png", section: "threed", link: "/projects/derp-blooper.png"},
+    { title: "Lighting Test", category: "3D Design", image: "/projects/lighting-test.png", section: "threed", link: "/projects/lighting-test.png"},
+    { title: "Post Practice", category: "3D Design", image: "/projects/post-test.png", section: "threed", link: "/projects/post-test.png" },
+    { title: "Post Practice 2", category: "3D Design", image: "/projects/post-two.png", section: "threed", link: "/projects/post-two.png" },
+    { title: "Lighting Practice", category: "3D Design", image: "/projects/lighting-practice.png", section: "threed", link: "/projects/lighting-practice.png" },
+    { title: "Aesthetics", category: "3D Design", image: "/projects/aesthetic.png", section: "threed", link: "/projects/aesthetic.png" },
+    { title: "GlaDos", category: "3D Design", image: "/projects/glados.png", section: "threed", link: "/projects/glados.png" },
+    { title: "Eula", category: "3D Design", image: "/projects/eula.png", section: "threed", link: "/projects/eula.png" },
 ];
 
 function PlayIcon() {
@@ -142,14 +143,27 @@ function ProjectCard({
         );
     }
 
+    if (project.link) {
+        return (
+            <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-card group block"
+            >
+                <ProjectThumbnail project={project} priority={priority} />
+                <ProjectMeta project={project} />
+            </a>
+        );
+    }
+
     return (
-        <a href="#" className="project-card group block">
+        <div className="project-card group block">
             <ProjectThumbnail project={project} priority={priority} />
             <ProjectMeta project={project} />
-        </a>
+        </div>
     );
 }
-
 function isStreamableUrl(url: string) {
     return /streamable\.com/i.test(url);
 }
