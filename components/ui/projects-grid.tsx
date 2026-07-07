@@ -49,8 +49,8 @@ const projects: Project[] = [
     { title: "Mini Judge", category: "Sketch", image: "/projects/mini-judge.png", section: "sketch" },
     { title: "Character Design", category: "Sketch", image: "/projects/character-design.png", section: "sketch" },
     { title: "Config", category: "Sketch", image: "/projects/config-design.png", section: "sketch" },
-    { title: "Resources Retold", category: "Videography & Editing", image: "/projects/resources-thumb.png", video: "/projects/resources.mp4", section: "video" },
-    { title: "Evolution of Computing", category: "Videography & Editing", image: "/projects/evolution-thumb.png", video: "/projects/evolution-video.mp4", section: "video" },
+    { title: "Resources Retold", category: "Videography & Editing", image: "/projects/resources-thumb.png", video: "https://streamable.com/jvgdwg", section: "video" },
+    { title: "Evolution of Computing", category: "Videography & Editing", image: "/projects/evolution-thumb.png", video: "https://streamable.com/9zjpj5", section: "video" },
     { title: "Parental Joy", category: "Photograph & Editing", image: "/projects/parental-enjoyment.png", section: "photo" },
     { title: "Score!", category: "Photograph & Editing", image: "/projects/score.png", section: "photo" },
     { title: "City View", category: "Photograph & Editing", image: "/projects/city-view.png", section: "photo" },
@@ -64,9 +64,9 @@ const projects: Project[] = [
     { title: "Happy Moments", category: "Editing", image: "/projects/happy-moments.png", section: "photo" },
     { title: "Elegance", category: "Photograph & Editing", image: "/projects/elegance.png", section: "photo" },
     { title: "RAHHH!!!", category: "Photograph & Editing", image: "/projects/rah.png", section: "photo" },
-    { title: "Pamantasan ng Lungsod ng Pasig Logo Showcase", category: "3D Design & Animation", image: "/projects/plp-logo.png", video: "/projects/plp-video.mp4", section: "threed" },
-    { title: "Pizzalicious", category: "3D Design & Animation", image: "/projects/pizzalicious.png", video: "/projects/pizzalicious-video.mp4", section: "threed" },
-    { title: "3D Geograph Practice", category: "3D Design & Animation", image: "/projects/taal-showcase.png", video: "/projects/taal-video.mp4", section: "threed" },
+    { title: "Pamantasan ng Lungsod ng Pasig Logo Showcase", category: "3D Design & Animation", image: "/projects/plp-logo.png", video: "https://streamable.com/dhgs59", section: "threed" },
+    { title: "Pizzalicious", category: "3D Design & Animation", image: "/projects/pizzalicious.png", video: "https://streamable.com/s3jmk8", section: "threed" },
+    { title: "3D Geograph Practice", category: "3D Design & Animation", image: "/projects/taal-showcase.png", video: "https://streamable.com/gutvni", section: "threed" },
     { title: "Derp Bloopers", category: "3D Design", image: "/projects/derp-blooper.png", section: "threed" },
     { title: "Lighting Test", category: "3D Design", image: "/projects/lighting-test.png", section: "threed" },
     { title: "Post Practice", category: "3D Design", image: "/projects/post-test.png", section: "threed" },
@@ -89,19 +89,19 @@ function ProjectThumbnail({ project, priority }: { project: Project; priority: b
     const isVideo = Boolean(project.video);
 
     return (
-        <div className="relative aspect-3/3 overflow-hidden">
+        <div className="relative aspect-square overflow-hidden">
             <Image
                 src={project.image}
                 alt={project.title}
                 fill
-                sizes="(max-width: 640px) 100vw, 33vw"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                 loading={priority ? "eager" : "lazy"}
                 priority={priority}
                 className="object-cover transition-transform duration-500 ease-out group-hover:scale-101"
             />
             {isVideo && (
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/25">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-black shadow-md transition-transform duration-300 group-hover:scale-110 sm:h-12 sm:w-12">
+                    <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white text-black shadow-md transition-transform duration-300 group-hover:scale-110">
                         <PlayIcon />
                     </span>
                 </div>
@@ -112,9 +112,9 @@ function ProjectThumbnail({ project, priority }: { project: Project; priority: b
 
 function ProjectMeta({ project }: { project: Project }) {
     return (
-        <p className="mt-3 text-sm">
+        <p className="mt-2 sm:mt-3 text-xs sm:text-sm">
             <span className="font-bold underline">{project.title}</span>
-            <span className="ml-2 font-normal text-neutral-500">{project.category}</span>
+            <span className="ml-2 font-normal text-neutral-500 block sm:inline">{project.category}</span>
         </p>
     );
 }
@@ -148,6 +148,24 @@ function ProjectCard({
             <ProjectMeta project={project} />
         </a>
     );
+}
+
+function isStreamableUrl(url: string) {
+    return /streamable\.com/i.test(url);
+}
+
+function getStreamableEmbedUrl(url: string) {
+    const id = url.split("/").filter(Boolean).pop();
+    return `https://streamable.com/e/${id}`;
+}
+
+function isEmbedUrl(url: string) {
+    return isStreamableUrl(url);
+}
+
+function getEmbedUrl(url: string) {
+    if (isStreamableUrl(url)) return getStreamableEmbedUrl(url);
+    return url;
 }
 
 function VideoModal({
@@ -201,13 +219,16 @@ function VideoModal({
 
     if (!project) return null;
 
+    const video = project.video ?? "";
+    const useIframe = isEmbedUrl(video);
+
     return (
         <div
             ref={overlayRef}
             role="dialog"
             aria-modal="true"
             aria-label={project.title}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 sm:p-8"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-8"
             onClick={onClose}
         >
             <div
@@ -219,23 +240,33 @@ function VideoModal({
                     type="button"
                     onClick={onClose}
                     aria-label="Close video"
-                    className="absolute -top-9 right-0 text-sm font-bold text-white underline underline-offset-2 sm:-top-10"
+                    className="absolute -top-8 right-0 text-xs sm:text-sm font-bold text-white underline underline-offset-2 sm:-top-10"
                 >
                     Close
                 </button>
 
                 <div className="relative aspect-video w-full overflow-hidden bg-black">
-                    <video
-                        key={project.video}
-                        src={project.video}
-                        controls
-                        autoPlay
-                        playsInline
-                        className="h-full w-full"
-                    />
+                    {useIframe ? (
+                        <iframe
+                            key={video}
+                            src={getEmbedUrl(video)}
+                            className="h-full w-full"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                        />
+                    ) : (
+                        <video
+                            key={video}
+                            src={video}
+                            controls
+                            autoPlay
+                            playsInline
+                            className="h-full w-full"
+                        />
+                    )}
                 </div>
 
-                <p className="mt-3 text-sm text-white">
+                <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-white">
                     <span className="font-bold underline">{project.title}</span>
                     <span className="ml-2 font-normal text-neutral-400">{project.category}</span>
                 </p>
@@ -262,12 +293,6 @@ export default function ProjectsGrid() {
 
             mm.add("(prefers-reduced-motion: no-preference)", () => {
                 gsap.set(cards, { autoAlpha: 0, y: 32 });
-
-                // IntersectionObserver replaces ScrollTrigger.batch here.
-                // It only reacts to cards actually crossing the viewport and
-                // doesn't depend on document height / scroll math, so it isn't
-                // disrupted by the ~58 images loading/reflowing elsewhere on
-                // the page (e.g. while jumping straight to #contact).
                 observer = new IntersectionObserver(
                     (entries) => {
                         const entering = entries.filter((e) => e.isIntersecting);
@@ -312,8 +337,8 @@ export default function ProjectsGrid() {
     );
 
     return (
-        <section id="projects" ref={gridRef} className="pb-5">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-2 gap-y-3 pb-5">
+        <section id="projects" ref={gridRef} className="pb-24 sm:pb-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-4 px-3 pb-5">
                 {visibleProjects.map((project, i) => (
                     <ProjectCard
                         key={project.title}

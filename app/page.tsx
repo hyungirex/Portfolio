@@ -8,7 +8,7 @@ import { FilterProvider } from "@/components/providers/filter-provider";
 export default function HomePage() {
     return (
         <FilterProvider>
-            <div className="min-h-screen px-2 pb-28">
+            <div className="min-h-screen pb-3">
                 <div className="flex">
                     <Header />
                 </div>

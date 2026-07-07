@@ -24,8 +24,12 @@ export default function HeroIntro() {
     );
 
     return (
-        <div ref={rootRef} id="home" className="w-full max-w-2xl px-5 pr-20 pt-12 pb-15">
-            <h1 className="intro-item text-2xl font-bold">
+        <div
+            ref={rootRef}
+            id="home"
+            className="w-full max-w-2xl px-4 sm:px-5 sm:pr-20 pt-8 sm:pt-12 pb-10 sm:pb-15"
+        >
+            <h1 className="intro-item text-xl sm:text-2xl font-bold">
                 Hey, I&apos;m Rex Vincent Santos
             </h1>
             <p className="intro-item text-sm mt-2 leading-relaxed text-muted-foreground">
