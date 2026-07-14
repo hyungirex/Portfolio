@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type FilterKey = "all" | "website" | "gallery" | "sketch" | "photo" | "video" | "threed";
+export type FilterKey = "all" | "website" | "design" | "media" | "threed";
 
 type FilterContextValue = {
     filter: FilterKey;

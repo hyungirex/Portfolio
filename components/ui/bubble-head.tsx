@@ -1,7 +1,6 @@
 "use client";
-
 import { useRef } from "react";
-import { Home, Wallpaper, Paintbrush, Pencil, Video, Camera, Contact, Box } from "lucide-react";
+import { Wallpaper, Paintbrush, Camera, Contact, Box } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useFilter } from "@/components/providers/filter-provider";
 
@@ -30,59 +29,56 @@ export default function BubbleHead() {
         gsap.to(window, { duration: 0.8, ease: "power2.inOut", scrollTo: { y: 0 } });
     });
 
-    const goHome = () => { setFilter("all"); scrollToTop(); };
+    // Home removed: tapping the logo/header should call setFilter("all") + scrollToTop.
+    // If your Header component doesn't do this yet, wire it there — that's the
+    // standard place users expect "go home" to live, freeing up room down here.
     const showWebsite = () => { setFilter("website"); scrollToTop(); };
-    const showGallery = () => { setFilter("gallery"); scrollToTop(); };
-    const showSketches = () => { setFilter("sketch"); scrollToTop(); };
-    const showVideo = () => { setFilter("video"); scrollToTop(); };
-    const showPhoto = () => { setFilter("photo"); scrollToTop(); };
+    const showDesign = () => { setFilter("design"); scrollToTop(); };
+    const showMedia = () => { setFilter("media"); scrollToTop(); };
     const show3D = () => { setFilter("threed"); scrollToTop(); };
     const goContact = () => {
         gsap.to(window, { duration: 1, ease: "power2.inOut", scrollTo: { y: "#contact", offsetY: 24 } });
     };
 
-    const active = "bg-primary text-secondary";
+    const active = "text-primary";
     const idle = "text-muted-foreground";
 
     const items = [
-        { label: "Home", icon: Home, onClick: goHome, isActive: filter === "all" },
-        { label: "Website Work", icon: Wallpaper, onClick: showWebsite, isActive: filter === "website" },
-        { label: "Design Gallery", icon: Paintbrush, onClick: showGallery, isActive: filter === "gallery" },
-        { label: "Sketch Gallery", icon: Pencil, onClick: showSketches, isActive: filter === "sketch" },
-        { label: "Video Work", icon: Video, onClick: showVideo, isActive: filter === "video" },
-        { label: "Photo Work", icon: Camera, onClick: showPhoto, isActive: filter === "photo" },
-        { label: "3D Work", icon: Box, onClick: show3D, isActive: filter === "threed" },
+        { label: "Websites", icon: Wallpaper, onClick: showWebsite, isActive: filter === "website" },
+        { label: "Design", icon: Paintbrush, onClick: showDesign, isActive: filter === "design" },
+        { label: "Media", icon: Camera, onClick: showMedia, isActive: filter === "media" },
+        { label: "3D", icon: Box, onClick: show3D, isActive: filter === "threed" },
     ];
 
     return (
         <div
             ref={pillRef}
-            className="fixed bottom-0 sm:bottom-6 left-0 w-full flex justify-center z-50 pb-[env(safe-area-inset-bottom)] sm:pb-0 pointer-events-none"
+            className="fixed bottom-0 left-0 w-full flex justify-center z-50 pb-[env(safe-area-inset-bottom)] pointer-events-none sm:hidden"
         >
-            <div
-                className="flex items-center justify-around sm:justify-center w-full sm:w-auto
-                           gap-0 sm:gap-1 bg-card border-t-2 sm:border-2 border-primary
-                           rounded-none sm:rounded-full px-1 py-2 sm:p-1 pointer-events-auto"
-            >
+            <div className="flex items-center w-full bg-card border-t-2 border-primary px-1 py-1.5 pointer-events-auto">
                 {items.map(({ label, icon: Icon, onClick, isActive }) => (
                     <button
                         key={label}
                         type="button"
-                        aria-label={label}
                         aria-pressed={isActive}
                         onClick={onClick}
-                        className={`flex-1 sm:flex-none flex items-center justify-center p-2 rounded-full transition-all duration-200 hover:scale-110 ${isActive ? active : idle}`}
+                        className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-1 rounded-md transition-colors duration-200 ${isActive ? active : idle}`}
                     >
-                        <Icon size={20} strokeWidth={1.8} />
+                        <Icon size={19} strokeWidth={isActive ? 2.2 : 1.8} />
+                        <span className={`text-[10px] leading-none ${isActive ? "font-bold" : "font-medium"}`}>
+                            {label}
+                        </span>
                     </button>
                 ))}
+
                 <button
                     type="button"
                     aria-label="Contact"
                     onClick={goContact}
-                    className="flex-1 sm:flex-none flex items-center justify-center p-2 rounded-full text-muted-foreground transition-transform duration-200 hover:scale-110"
+                    className="flex-1 flex flex-col items-center justify-center gap-0.5 py-1 rounded-md text-muted-foreground"
                 >
-                    <Contact size={20} strokeWidth={1.5} />
+                    <Contact size={19} strokeWidth={1.8} />
+                    <span className="text-[10px] leading-none font-medium">Contact</span>
                 </button>
             </div>
         </div>
