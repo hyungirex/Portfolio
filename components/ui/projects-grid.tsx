@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { ImageOff } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useFilter } from "@/components/providers/filter-provider";
 import SectionNav from "@/components/ui/section-nav";
@@ -117,31 +118,46 @@ function TechStackPills({ techStack }: { techStack: string[] }) {
     );
 }
 
+function ImageEmptyState({ label }: { label?: string }) {
+    return (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-secondary/40 text-muted-foreground">
+            <ImageOff className="h-6 w-6 sm:h-8 sm:w-8" strokeWidth={1.5} aria-hidden="true" />
+            <span className="text-[9px] sm:text-xs font-medium">{label ?? "Image unavailable"}</span>
+        </div>
+    );
+}
+
 function ProjectThumbnail({ project, priority }: { project: Project; priority: boolean }) {
+    const [imageError, setImageError] = useState(false);
     const isVideo = Boolean(project.video);
     const hasTechStack = Boolean(project.techStack && project.techStack.length > 0);
 
     return (
         <div className="relative aspect-square overflow-hidden">
-            <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                draggable={false}
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                loading={priority ? "eager" : "lazy"}
-                priority={priority}
-                className="object-cover transition-transform duration-500 ease-out group-hover:scale-101 select-none [-webkit-touch-callout:none] [-webkit-user-drag:none]"
-                style={{ WebkitTouchCallout: "none" }}
-            />
-            {isVideo && (
+            {imageError ? (
+                <ImageEmptyState />
+            ) : (
+                <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    draggable={false}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                    loading={priority ? "eager" : "lazy"}
+                    priority={priority}
+                    onError={() => setImageError(true)}
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-101 select-none [-webkit-touch-callout:none] [-webkit-user-drag:none]"
+                    style={{ WebkitTouchCallout: "none" }}
+                />
+            )}
+            {isVideo && !imageError && (
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/25">
                     <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-background text-foreground shadow-md transition-transform duration-300 group-hover:scale-110">
                         <PlayIcon />
                     </span>
                 </div>
             )}
-            {hasTechStack && <TechStackPills techStack={project.techStack!} />}
+            {hasTechStack && !imageError && <TechStackPills techStack={project.techStack!} />}
         </div>
     );
 }
@@ -150,7 +166,7 @@ function ProjectMeta({ project }: { project: Project }) {
     return (
         <div className="mt-2 sm:mt-3">
             <p className="text-xs sm:text-sm flex items-baseline gap-1.5 flex-wrap">
-                <span className="font-bold underline">{project.title}</span>
+                <span className="font-bold">{project.title}</span>
                 <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     {project.category}
                 </span>
@@ -214,6 +230,13 @@ function ProjectModal({
 }) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
+    const [modalImageError, setModalImageError] = useState(false);
+    const [lastImage, setLastImage] = useState(project?.image);
+
+    if (project?.image !== lastImage) {
+        setLastImage(project?.image);
+        setModalImageError(false);
+    }
 
     useEffect(() => {
         if (!project) return;
@@ -307,20 +330,27 @@ function ProjectModal({
                     </div>
                 ) : (
                     <div className="min-h-0 flex-1 overflow-hidden">
-                        <img
-                            src={project.image}
-                            alt={project.title}
-                            draggable={false}
-                            onContextMenu={(e) => e.preventDefault()}
-                            className="h-full w-full object-cover select-none [-webkit-touch-callout:none]"
-                            style={{ WebkitTouchCallout: "none" }}
-                        />
+                        {modalImageError ? (
+                            <div className="aspect-video w-full sm:aspect-auto sm:h-full">
+                                <ImageEmptyState label="Preview unavailable" />
+                            </div>
+                        ) : (
+                            <img
+                                src={project.image}
+                                alt={project.title}
+                                draggable={false}
+                                onContextMenu={(e) => e.preventDefault()}
+                                onError={() => setModalImageError(true)}
+                                className="h-full w-full object-cover select-none [-webkit-touch-callout:none]"
+                                style={{ WebkitTouchCallout: "none" }}
+                            />
+                        )}
                     </div>
                 )}
 
                 <div className="shrink-0 p-4 sm:p-6">
                     <p className="flex items-baseline gap-2 flex-wrap">
-                        <span className="text-base sm:text-lg font-bold underline">{project.title}</span>
+                        <span className="text-base sm:text-lg font-bold">{project.title}</span>
                         <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide text-muted-foreground">
                             {project.category}
                         </span>
