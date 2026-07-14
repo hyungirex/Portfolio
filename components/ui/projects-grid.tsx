@@ -92,12 +92,6 @@ function PlayIcon() {
         </svg>
     );
 }
-
-/**
- * Generic image icon shown while a project image is loading, and left in
- * place permanently if the image fails to load. Always rendered underneath
- * the real <Image>/<img> so there's never a blank/empty box.
- */
 function ImagePlaceholder({ failed = false }: { failed?: boolean }) {
     return (
         <div
@@ -244,12 +238,6 @@ function getEmbedUrl(url: string) {
 function isImagePath(url: string) {
     return /\.(png|jpe?g|gif|webp|svg)$/i.test(url);
 }
-
-/**
- * Full-size project image used inside the modal. Keyed by src from the
- * parent so its loading/error state resets whenever a different project
- * is opened, rather than sticking with the previous project's status.
- */
 function ModalImage({ src, alt }: { src: string; alt: string }) {
     const [status, setStatus] = useState<ImageStatus>("loading");
 
@@ -375,7 +363,7 @@ function ProjectModal({
                         )}
                     </div>
                 ) : (
-                    <div className="min-h-0 flex-1 overflow-hidden">
+                    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-popover">
                         <ModalImage key={project.image} src={project.image} alt={project.title} />
                     </div>
                 )}
