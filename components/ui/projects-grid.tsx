@@ -3,7 +3,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { ImageOff } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useFilter } from "@/components/providers/filter-provider";
 import SectionNav from "@/components/ui/section-nav";
@@ -94,6 +93,38 @@ function PlayIcon() {
     );
 }
 
+/**
+ * Generic image icon shown while a project image is loading, and left in
+ * place permanently if the image fails to load. Always rendered underneath
+ * the real <Image>/<img> so there's never a blank/empty box.
+ */
+function ImagePlaceholder({ failed = false }: { failed?: boolean }) {
+    return (
+        <div
+            className="absolute inset-0 flex items-center justify-center bg-secondary/40"
+            aria-hidden="true"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                className={`h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground/40 ${failed ? "" : "animate-pulse"}`}
+            >
+                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+                <path
+                    d="M21 15l-5-5-11 11"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+            </svg>
+        </div>
+    );
+}
+
+type ImageStatus = "loading" | "loaded" | "error";
+
 function TechStackPills({ techStack }: { techStack: string[] }) {
     const maxVisible = 3;
     const visible = techStack.slice(0, maxVisible);
@@ -118,25 +149,15 @@ function TechStackPills({ techStack }: { techStack: string[] }) {
     );
 }
 
-function ImageEmptyState({ label }: { label?: string }) {
-    return (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-secondary/40 text-muted-foreground">
-            <ImageOff className="h-6 w-6 sm:h-8 sm:w-8" strokeWidth={1.5} aria-hidden="true" />
-            <span className="text-[9px] sm:text-xs font-medium">{label ?? "Image unavailable"}</span>
-        </div>
-    );
-}
-
 function ProjectThumbnail({ project, priority }: { project: Project; priority: boolean }) {
-    const [imageError, setImageError] = useState(false);
     const isVideo = Boolean(project.video);
     const hasTechStack = Boolean(project.techStack && project.techStack.length > 0);
+    const [status, setStatus] = useState<ImageStatus>("loading");
 
     return (
-        <div className="relative aspect-square overflow-hidden">
-            {imageError ? (
-                <ImageEmptyState />
-            ) : (
+        <div className="relative aspect-square overflow-hidden bg-secondary/40">
+            {status !== "loaded" && <ImagePlaceholder failed={status === "error"} />}
+            {status !== "error" && (
                 <Image
                     src={project.image}
                     alt={project.title}
@@ -145,19 +166,22 @@ function ProjectThumbnail({ project, priority }: { project: Project; priority: b
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                     loading={priority ? "eager" : "lazy"}
                     priority={priority}
-                    onError={() => setImageError(true)}
-                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-101 select-none [-webkit-touch-callout:none] [-webkit-user-drag:none]"
+                    onLoad={() => setStatus("loaded")}
+                    onError={() => setStatus("error")}
+                    className={`object-cover transition-[opacity,transform] duration-500 ease-out group-hover:scale-101 select-none [-webkit-touch-callout:none] [-webkit-user-drag:none] ${
+                        status === "loaded" ? "opacity-100" : "opacity-0"
+                    }`}
                     style={{ WebkitTouchCallout: "none" }}
                 />
             )}
-            {isVideo && !imageError && (
+            {isVideo && (
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/25">
                     <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-background text-foreground shadow-md transition-transform duration-300 group-hover:scale-110">
                         <PlayIcon />
                     </span>
                 </div>
             )}
-            {hasTechStack && !imageError && <TechStackPills techStack={project.techStack!} />}
+            {hasTechStack && <TechStackPills techStack={project.techStack!} />}
         </div>
     );
 }
@@ -221,6 +245,35 @@ function isImagePath(url: string) {
     return /\.(png|jpe?g|gif|webp|svg)$/i.test(url);
 }
 
+/**
+ * Full-size project image used inside the modal. Keyed by src from the
+ * parent so its loading/error state resets whenever a different project
+ * is opened, rather than sticking with the previous project's status.
+ */
+function ModalImage({ src, alt }: { src: string; alt: string }) {
+    const [status, setStatus] = useState<ImageStatus>("loading");
+
+    return (
+        <div className="relative h-full w-full bg-secondary/40">
+            {status !== "loaded" && <ImagePlaceholder failed={status === "error"} />}
+            {status !== "error" && (
+                <img
+                    src={src}
+                    alt={alt}
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onLoad={() => setStatus("loaded")}
+                    onError={() => setStatus("error")}
+                    className={`h-full w-full object-cover select-none [-webkit-touch-callout:none] transition-opacity duration-500 ease-out ${
+                        status === "loaded" ? "opacity-100" : "opacity-0"
+                    }`}
+                    style={{ WebkitTouchCallout: "none" }}
+                />
+            )}
+        </div>
+    );
+}
+
 function ProjectModal({
     project,
     onClose,
@@ -230,13 +283,6 @@ function ProjectModal({
 }) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
-    const [modalImageError, setModalImageError] = useState(false);
-    const [lastImage, setLastImage] = useState(project?.image);
-
-    if (project?.image !== lastImage) {
-        setLastImage(project?.image);
-        setModalImageError(false);
-    }
 
     useEffect(() => {
         if (!project) return;
@@ -330,21 +376,7 @@ function ProjectModal({
                     </div>
                 ) : (
                     <div className="min-h-0 flex-1 overflow-hidden">
-                        {modalImageError ? (
-                            <div className="aspect-video w-full sm:aspect-auto sm:h-full">
-                                <ImageEmptyState label="Preview unavailable" />
-                            </div>
-                        ) : (
-                            <img
-                                src={project.image}
-                                alt={project.title}
-                                draggable={false}
-                                onContextMenu={(e) => e.preventDefault()}
-                                onError={() => setModalImageError(true)}
-                                className="h-full w-full object-cover select-none [-webkit-touch-callout:none]"
-                                style={{ WebkitTouchCallout: "none" }}
-                            />
-                        )}
+                        <ModalImage key={project.image} src={project.image} alt={project.title} />
                     </div>
                 )}
 
